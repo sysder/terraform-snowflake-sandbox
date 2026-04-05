@@ -1,0 +1,2 @@
+# terraform-snowflake-sandbox
+Claude Codeを使用してTerraformでSnowflakeのBusiness Critical環境を構築する実験
