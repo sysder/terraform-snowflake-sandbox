@@ -2,7 +2,7 @@ terraform {
   required_providers {
     snowflake = {
       source  = "snowflakedb/snowflake"
-      version = "~> 2.0"
+      version = "~> 2"
     }
   }
 }
@@ -26,16 +26,14 @@ resource "snowflake_warehouse" "sandbox_wh" {
   warehouse_size = "XSMALL"
   auto_suspend   = 60
   auto_resume    = true
-  comment        = "Sandbox warehouse managed by Terraform (test)"
+  comment        = "Sandbox warehouse managed by Terraform"
 }
 
-resource "snowflake_database" "sandbox_db" {
-  name    = "SANDBOX_DB"
-  comment = "Sandbox database managed by Terraform"
-}
+module "sandbox_db" {
+  source = "./modules/snowflake_database"
 
-resource "snowflake_schema" "sandbox_schema" {
-  database = snowflake_database.sandbox_db.name
-  name     = "SANDBOX_SCHEMA"
-  comment  = "Sandbox schema managed by Terraform"
+  database_name = "SANDBOX_DB"
+  schema_name   = "SANDBOX_SCHEMA"
+  role_name     = snowflake_account_role.sandbox_role.name
+  comment       = "Sandbox database managed by Terraform"
 }
