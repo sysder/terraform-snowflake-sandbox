@@ -1,0 +1,36 @@
+{
+    "name": "Snowflake-Terraform-Sandbox",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    // Microsoft公式のFeatureを使用してTerraformをインストール
+    "features": {
+        "ghcr.io/devcontainers/features/terraform:1": {
+            "version": "latest"
+        }
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-python.python",              // Python基本サポート
+                "charliermarsh.ruff",            // uvと同じ開発元による超高速リンター・整形 (推奨)
+                "tamasfe.even-better-toml",      // uvで使う pyproject.toml を綺麗に表示
+                "hashicorp.terraform",           // Terraformの入力補完と構文チェック (必須)
+                "snowflake.snowflake-vsc",       // VS Codeから直接Snowflakeのクエリを実行可能 (便利)
+                "GitHub.copilot",                // AI補完
+                "GitHub.copilot-chat",           // AIチャット
+                "mhutchie.git-graph"             // Gitの履歴を視覚的に理解しやすくする
+            ]
+        }
+    },
+    // ホストマシンの環境変数をコンテナに引き継ぐ（コンテナ再構築時のClaude Code再ログインを防ぐため）
+    "remoteEnv": {
+        "ANTHROPIC_API_KEY": "${localEnv:ANTHROPIC_API_KEY}"
+    },
+    // uvを使用してライブラリをインストール（コンテナのシステムPythonへ）
+    "postCreateCommand": "sudo uv pip install --link-mode=copy quests beautifulsoup4 tenacity --system",
+    "remoteUser": "vscode",
+    "mounts": [
+        "source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached"
+    ]
+}
