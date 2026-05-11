@@ -37,3 +37,10 @@ module "sandbox_db" {
   role_name     = snowflake_account_role.sandbox_role.name
   comment       = "Sandbox database managed by Terraform"
 }
+
+module "sandbox_standard_roles" {
+  source = "./modules/snowflake_standard_roles"
+
+  database_name = module.sandbox_db.database_name
+  schema_name   = module.sandbox_db.schema_name
+}

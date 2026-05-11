@@ -7,6 +7,9 @@
     "features": {
         "ghcr.io/devcontainers/features/terraform:1": {
             "version": "latest"
+        },
+        "ghcr.io/devcontainers/features/github-cli:1": {
+            "version": "latest"
         }
     },
     "customizations": {
@@ -25,10 +28,11 @@
     },
     // ホストマシンの環境変数をコンテナに引き継ぐ（コンテナ再構築時のClaude Code再ログインを防ぐため）
     "remoteEnv": {
-        "ANTHROPIC_API_KEY": "${localEnv:ANTHROPIC_API_KEY}"
+        "ANTHROPIC_API_KEY": "${localEnv:ANTHROPIC_API_KEY}",
+        "GH_TOKEN": "${localEnv:GH_TOKEN}"
     },
     // uvを使用してライブラリをインストール（コンテナのシステムPythonへ）
-    "postCreateCommand": "sudo uv pip install --link-mode=copy quests beautifulsoup4 tenacity --system",
+    "postCreateCommand": "sudo uv pip install --link-mode=copy quests beautifulsoup4 tenacity --system && echo $GH_TOKEN | gh auth login --with-token",
     "remoteUser": "vscode",
     "mounts": [
         "source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached"
