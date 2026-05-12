@@ -24,7 +24,7 @@ resource "snowflake_account_role" "sandbox_role" {
 }
 
 resource "snowflake_warehouse" "sandbox_wh" {
-name           = "SANDBOX_WH"
+  name           = "SANDBOX_WH"
   warehouse_size = "XSMALL"
   auto_suspend   = 60
   auto_resume    = true
